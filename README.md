@@ -15,6 +15,7 @@ script to reflesh opensea metadata
 
 ・URL_HEAD
 0xで始まる部分を、対象のNFTのコントラクトアドレスに変更します
+テストネットじゃない本番環境が対象の場合は「testnets-」を削除します
 
 ・for i in {120..200}
 refleshしたいidの範囲に変更します
