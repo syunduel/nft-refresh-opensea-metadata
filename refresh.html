@@ -12,45 +12,75 @@
 
     <title>Refresh OpenSea metadata</title>
     <script>
+        const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        function dispResponse(text) {
+            console.log(text);
+//            $('#responseView').append($("<div>" + text + "</div>"));
+
+        }
+
         function refresh() {
 
-            // testnet
-            var urlHeadTestnet = "https://testnets-api.opensea.io/api/v1/asset/0x90a3fba08fe9066ccbb4cab3e94301df7a4312c4/";
             // production
-            var urlHeadProduction = "https://api.opensea.io/api/v1/asset/0x9C99d7f09d4a7e23EA4E36AeC4CB590C5bbdB0e2/";
+            var urlHeadProduction = "https://api.opensea.io/api/v1/asset/";
+            // testnet
+            var urlHeadTestnet = "https://testnets-api.opensea.io/api/v1/asset/";
 
-            var urlTail = "/";
+            var target = $('input:radio[name="target"]:checked').val();
 
-            var urhHead = urlHeadProduction;
+            var urlHead = "";
+            if (target == "1") {
+                urlHead = urlHeadProduction;
+            } else {
+                urlHead = urlHeadTestnet;
+            }
+            urlHead = urlHead + $('#contract').val() + "/";
 
-            for (var i = 1; i <= 40; i++) {
-                var nowUrl = urhHead + i + urlTail;
-                console.log(nowUrl);
+            var startId = $('#startId').val();
+            var endId = $('#endId').val();
+
+            for (var i = startId; i <= endId; i++) {
+
+                // if($("#stop").prop("checked")) {
+                //     alert("中断しました");
+                //     break;
+                // }
+
+                var nowUrl = urlHead + i + "/";
+
+                dispResponse(nowUrl);
+
                 $.ajax({
                     async: false,
                     url: nowUrl,
                     type: 'GET',
                     contentType: 'application/json',
-                    dataType: "application/json",
+                    dataType: "html",
                     data: {
                         force_update: true,
                     },
-                    statusCode: {
-                        200: function(data){
-                            console.log("200");
-                            console.log(data);
-                        }, 
-                        404: function(data){
-                            console.log("404");
-                        }
-                    },
+                    // statusCode: {
+                    //     200: function(data){
+                    //         console.log("200");
+                    //         console.log(data);
+                    //         dispResponse("成功");
+                    //     }, 
+                    //     404: function(data){
+                    //         console.log("404");
+                    //         console.log(data);
+                    //         dispResponse("失敗");
+                    //     }
+                    // },
                 })
                 .done(function (data) {
-                    $('#responseView').text("asdadfadfa");
+                    dispResponse("成功");
                 })
                 .fail(function (data) {
-                    console.log(data);
+                    dispResponse("失敗");
                 });
+
+                _sleep(500);
             }
         }
     </script>
@@ -58,19 +88,18 @@
   <body>
 
     <div class="container">
-        <h1>Hello, world!</h1>
+        <h1>Refresh OpenSea metadata</h1>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">環境</span>
             <div class="input-group-text">
-                <input type="radio" class="form-check-input mt-0" name="target" value="1" aria-label="テストネット">
-                <label class="form-check-label" for="flexRadioDefault1">
-                    テストネット
-                </label>
-    
-                <input type="radio" class="form-check-input mt-0" name="target" value="2" aria-label="本番" checked>
+                <input type="radio" class="form-check-input mt-0" name="target" value="1" aria-label="本番" checked>
                 <label class="form-check-label" for="flexRadioDefault1">
                     本番
+                </label>
+                <input type="radio" class="form-check-input mt-0" name="target" value="2" aria-label="テストネット">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    テストネット
                 </label>
             </div>
         </div>
@@ -87,17 +116,26 @@
     
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">終了する番号</span>
-            <input type="text" class="form-control" placeholder="4000" id="endId" aria-label="endId" aria-describedby="basic-addon1" value="4000">
+            <input type="text" class="form-control" placeholder="4000" id="endId" aria-label="endId" aria-describedby="basic-addon1" value="20">
         </div>
 
         <div class="input-group mb-3">
             <button onclick="refresh();">refresh!</button>
         </div>
 
+<!--
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">中断する</span>
+            <div class="input-group-text">
+                <input type="checkbox" class="form-check-input mt-0" name="stop" value="1" aria-label="中断する">
+            </div>
+        </div>
+
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">コンソール</span>
-            <textarea class="form-control" id="responseView" aria-label="responseView"></textarea>
+            <div class="overflow-auto"  class="form-control" id="responseView">aaa</div>
         </div>
+-->
     </div>
 
 
