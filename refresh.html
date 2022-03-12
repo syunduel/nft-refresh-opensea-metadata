@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <title>Refresh OpenSea metadata</title>
+    <script>
+        function refresh() {
+
+            // testnet
+            var urlHeadTestnet = "https://testnets-api.opensea.io/api/v1/asset/0x90a3fba08fe9066ccbb4cab3e94301df7a4312c4/";
+            // production
+            var urlHeadProduction = "https://api.opensea.io/api/v1/asset/0x9C99d7f09d4a7e23EA4E36AeC4CB590C5bbdB0e2/";
+
+            var urlTail = "/";
+
+            var urhHead = urlHeadProduction;
+
+            for (var i = 1; i <= 40; i++) {
+                var nowUrl = urhHead + i + urlTail;
+                console.log(nowUrl);
+                $.ajax({
+                    async: false,
+                    url: nowUrl,
+                    type: 'GET',
+                    contentType: 'application/json',
+                    dataType: "application/json",
+                    data: {
+                        force_update: true,
+                    },
+                    statusCode: {
+                        200: function(data){
+                            console.log("200");
+                            console.log(data);
+                        }, 
+                        404: function(data){
+                            console.log("404");
+                        }
+                    },
+                })
+                .done(function (data) {
+                    $('#responseView').text("asdadfadfa");
+                })
+                .fail(function (data) {
+                    console.log(data);
+                });
+            }
+        }
+    </script>
+  </head>
+  <body>
+
+    <div class="container">
+        <h1>Hello, world!</h1>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">環境</span>
+            <div class="input-group-text">
+                <input type="radio" class="form-check-input mt-0" name="target" value="1" aria-label="テストネット">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    テストネット
+                </label>
+    
+                <input type="radio" class="form-check-input mt-0" name="target" value="2" aria-label="本番" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    本番
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">コントラクト</span>
+            <input type="text" class="form-control" placeholder="0x..." id="contract" aria-label="contract" aria-describedby="basic-addon1" value="0x9C99d7f09d4a7e23EA4E36AeC4CB590C5bbdB0e2">
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">開始する番号</span>
+            <input type="text" class="form-control" placeholder="0" id="startId" aria-label="startId" aria-describedby="basic-addon1" value="1">
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">終了する番号</span>
+            <input type="text" class="form-control" placeholder="4000" id="endId" aria-label="endId" aria-describedby="basic-addon1" value="4000">
+        </div>
+
+        <div class="input-group mb-3">
+            <button onclick="refresh();">refresh!</button>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">コンソール</span>
+            <textarea class="form-control" id="responseView" aria-label="responseView"></textarea>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
