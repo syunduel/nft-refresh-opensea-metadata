@@ -6,7 +6,7 @@ revealなどでメタデータの更新をした際に、OpenSeaの個別のNFT�
 
 ## ページを開く
 
-・「 https://syunduel.github.io/nft-refresh-opensea-metadata/refresh.html 」を開いてください。
+・「 [https://syunduel.github.io/nft-refresh-opensea-metadata/refresh.html](https://syunduel.github.io/nft-refresh-opensea-metadata/refresh.html) 」を開いてください。
 
 ## 設定の変更
 下記の値を、リフレッシュしたい対象に変更します
