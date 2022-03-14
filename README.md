@@ -1,5 +1,6 @@
 # nft-refresh-opensea-metadata
-web tool to reflesh opensea metadata
+OpenSeaが持っているメタデータを更新するwebツールです。
+revealなどでメタデータの更新をした際に、OpenSeaの個別のNFTのページでリフレッシュボタンを押して回らずに済みます。
 
 # 使い方
 
